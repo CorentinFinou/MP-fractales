@@ -1,2 +1,0 @@
-print("salut")
-print("oui")
