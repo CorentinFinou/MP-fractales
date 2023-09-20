@@ -1,1 +1,92 @@
+Fractale de Paul :
 
+Fractale du flocon de VonKoch 1 :
+
+import turtle as tl
+
+def courbeVonKoch(  n, cote  ) :
+	if n == 0 :
+		tl.forward(cote)
+	else :
+		courbeVonKoch(n-1, cote/3)
+		tl.left(60)
+		courbeVonKoch(n-1, cote/3)
+		tl.left(-120)
+		courbeVonKoch(n-1, cote/3)
+		tl.left(60)
+		courbeVonKoch(n-1, cote/3)
+
+
+def flocon(n, cote) :
+	for _ in range(3) :
+		courbeVonKoch(  n, cote  )
+		tl.left(-120)
+
+tl.setheading(0) 
+tl.hideturtle() 
+tl.speed(0)	 
+tl.color('green')
+flocon(  n = 3, cote = 200  )
+tl.exitonclick() 
+
+
+Fractale du flocon de VonKoch 2 :
+
+import turtle as tl
+
+
+def courbeVonKoch(  n, cote  ) :
+	if n == 0 :
+		tl.forward(cote)
+	else :
+		courbeVonKoch(n-1, cote/3)
+		tl.left(90)
+		courbeVonKoch(n-1, cote/3)
+		tl.right(90)
+		courbeVonKoch(n-1, cote/3)
+		tl.right(90)
+		courbeVonKoch(n-1, cote/3)
+		tl.left(90)
+		courbeVonKoch(n-1, cote/3)
+
+
+def flocon(n, cote) :
+	for _ in range(3) :
+		courbeVonKoch(  n, cote  )
+		tl.left(-120)
+
+tl.setheading(0) 
+tl.hideturtle() 
+tl.speed(0)	 
+tl.color('green')
+flocon(  n = 4, cote = 200  )
+tl.exitonclick() 
+
+
+Fractale de sierpinski :
+
+from turtle import *
+
+def sierpinski(n, l):
+    if n == 0:
+        for _ in range(3):
+            forward(l)
+            left(120)
+    else:
+        l /= 2.0
+        sierpinski(n - 1, l)  
+        forward(l)
+        sierpinski(n - 1, l)  
+        backward(l)
+        left(60)
+        forward(l)
+        right(60)
+        sierpinski(n - 1, l)  
+        left(60)
+        backward(l)
+        right(60)
+
+hideturtle()
+speed('fastest')
+sierpinski(5, 300)
+mainloop()
