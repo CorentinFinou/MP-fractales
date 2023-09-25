@@ -90,3 +90,33 @@ hideturtle()
 speed('fastest')
 sierpinski(5, 300)
 mainloop()
+
+
+Fracctale carré :
+
+import turtle as t
+
+def carre(cote) :
+    for _ in range(4) :
+        t.forward(cote)
+        t.left(90)
+
+def imbrique(cote, n) :
+    if n > 0 :
+        carre(cote)
+        t.penup() 
+        t.forward(cote//2) 
+        t.left(45) 
+        t.pendown()
+        imbrique(cote/2**0.5, n-1)
+
+
+t.title("Carrés imbriqués")    
+t.hideturtle() 
+t.speed(0)
+t.pencolor("orange")
+
+cote = 200
+nombreDeCarres = 10
+imbrique( cote , nombreDeCarres)
+t.exitonclick()
