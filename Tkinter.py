@@ -12,7 +12,7 @@ def reset():
     global isClear
     t.clear()
     t.penup()
-    t.goto(390,-405)
+    t.goto(turtleCanvas.winfo_screenmmwidth()/2,-turtleCanvas.winfo_screenmmwidth()/2)
     t.pendown()
     isClear = True
 #
@@ -116,7 +116,7 @@ labelPresets = Label(framePresets, text="Presets :",font="Arial 30 bold",backgro
 
 
 #Boutons de presets (master = framePresets):
-sierpinskiButton = Button(framePresets,text="Sierpinski",font="20",activebackground="#7ea0b7",background="#a9cef4",command= lambda: fractaleIntermediateFctn(sierpinski,3,200)).grid(row=1,sticky="NSWE")
+sierpinskiButton = Button(framePresets,text="Sierpinski",font="20",activebackground="#7ea0b7",background="#a9cef4",command= lambda: fractaleIntermediateFctn(sierpinski,curseurOrdre.get(),200)).grid(row=1,sticky="NSWE")
 vonKoch1Button = Button(framePresets,text="VonKoch 1",font="20",activebackground="#7ea0b7",background="#a9cef4",command= lambda: fractaleIntermediateFctn(vonKoch1,3,200)).grid(row=2,sticky="NSWE")
 button3 = Button(framePresets,text="preset 3",activebackground="#7ea0b7",background="#a9cef4",font="20").grid(row=3,sticky="NSWE")
 button4 = Button(framePresets,text="preset 4",activebackground="#7ea0b7",background="#a9cef4",font="20").grid(row=4,sticky="NSWE")
