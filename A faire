@@ -149,3 +149,18 @@ def dragoncurve(l,n):
   x(n)
 dragoncurve(5,15)
 
+Fractale Cercle :
+
+import turtle
+
+turtle.pensize(3)
+turtle.speed(10)   
+
+n = 10
+rayon = 0
+for k in range(n):
+    rayon += 10                # le rayon augmente à chaque tour
+    turtle.circle(rayon, 180)  # un demi-cercle
+    turtle.stamp()             # pour laisser une marque de la tortue
+
+turtle.done()
