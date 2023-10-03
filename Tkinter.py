@@ -1,6 +1,7 @@
 from tkinter import *
 from turtle import *
-
+from tkinter import colorchooser
+import test
 
 ############################################## Module Turtle ##############################################
 
@@ -12,10 +13,19 @@ def reset():
     global isClear
     t.clear()
     t.penup()
+    t.goto(0,0)
     t.goto(turtleCanvas.winfo_screenmmwidth()/2,-turtleCanvas.winfo_screenmmwidth()/2)
+    #print(turtleCanvas.winfo_screenmmwidth()/2,-turtleCanvas.winfo_screenmmwidth()/2)
     t.pendown()
     isClear = True
 #
+
+def getSourisPos(eventSpec):
+    t.penup()
+    t.goto(eventSpec.x-191,-eventSpec.y+134)#pas toucher, a tester sur plus grand écran
+    t.pendown()
+
+
 
 def sierpinski(n, l):
         if n == 0: 
@@ -51,19 +61,30 @@ def vonKoch1(n,l):
             vonKoch1(n-1, l/3)
 
 #Fonction intermédiare entre les boutons et les fonctions de fractales.
-def fractaleIntermediateFctn(nomFractale,n,l):
+def fractaleIntermediateFctn(nomFractale,n,l,r,c):
     global isClear
     if checkBoxClearBoolean.get() == True:
         if isClear == True:
+            t.color(c)
+            t.setheading(r)
             nomFractale(n,l)
             isClear = False
         else :
             reset()
-            fractaleIntermediateFctn(nomFractale,n,l)
+            fractaleIntermediateFctn(nomFractale,n,l,r,c)
     else:
+        t.color(c) 
+        t.setheading(r)
         nomFractale(n,l)
 #
 
+def choose_color():
+    global turtleColor,couleurButton
+    turtleColor = colorchooser.askcolor(title ="Choose color")[1]
+    couleurButton.config(foreground=turtleColor)
+
+def random():
+    pass
 ############################################## Module tkinter ##############################################
 
 ###Fenetre principale
@@ -116,8 +137,8 @@ labelPresets = Label(framePresets, text="Presets :",font="Arial 30 bold",backgro
 
 
 #Boutons de presets (master = framePresets):
-sierpinskiButton = Button(framePresets,text="Sierpinski",font="20",activebackground="#7ea0b7",background="#a9cef4",command= lambda: fractaleIntermediateFctn(sierpinski,curseurOrdre.get(),200)).grid(row=1,sticky="NSWE")
-vonKoch1Button = Button(framePresets,text="VonKoch 1",font="20",activebackground="#7ea0b7",background="#a9cef4",command= lambda: fractaleIntermediateFctn(vonKoch1,3,200)).grid(row=2,sticky="NSWE")
+sierpinskiButton = Button(framePresets,text="Sierpinski",font="20",activebackground="#7ea0b7",background="#a9cef4",command= lambda: fractaleIntermediateFctn(sierpinski,curseurOrdre.get(),curseurTaille.get(),curseurRotation.get(),turtleColor)).grid(row=1,sticky="NSWE")
+vonKoch1Button = Button(framePresets,text="VonKoch 1",font="20",activebackground="#7ea0b7",background="#a9cef4",command= lambda: fractaleIntermediateFctn(vonKoch1,curseurOrdre.get(),curseurTaille.get(),curseurRotation.get(),turtleColor)).grid(row=2,sticky="NSWE")
 button3 = Button(framePresets,text="preset 3",activebackground="#7ea0b7",background="#a9cef4",font="20").grid(row=3,sticky="NSWE")
 button4 = Button(framePresets,text="preset 4",activebackground="#7ea0b7",background="#a9cef4",font="20").grid(row=4,sticky="NSWE")
 button5 = Button(framePresets,text="preset 5",activebackground="#7ea0b7",background="#a9cef4",font="20").grid(row=5,sticky="NSWE")
@@ -143,8 +164,18 @@ labelOrdre = Label(frameBarres, text="Ordre :").grid(row=2,sticky="NSWE")
 curseurOrdre = Scale(frameBarres,from_=1,to=6,orient="horizontal")
 curseurOrdre.grid(row=3,sticky="NSWE")
 curseurOrdre.set(4)
-
-
+labelTaille = Label(frameBarres,text="Taille :").grid(row=4,sticky="NSWE")
+curseurTaille = Scale(frameBarres,from_=10,to=300,orient="horizontal")
+curseurTaille.grid(row=5,sticky="NSWE")
+curseurTaille.set(200)
+labelRotation = Label(frameBarres,text="Rotation (antihoraire) :").grid(row=6,sticky="NSWE")
+curseurRotation = Scale(frameBarres,from_=0,to=360,orient="horizontal")
+curseurRotation.grid(row=7,sticky="NSWE")
+turtleColor = "black"
+couleurButton = Button(frameBarres, text="Couleur",command=choose_color,foreground=turtleColor,font="Arial 20")
+couleurButton.grid(row=8,sticky="NSWE")
+randomButton = Button(frameBarres, text="Random",font="Arial 20",command=random)
+randomButton.grid(row=9,sticky="NSWE")
 
 #CheckBox de Clear (master : frameBarres)
 checkBoxClearBoolean = BooleanVar()
@@ -155,16 +186,15 @@ checkBoxClear.select()#set la checkBox sur cochée de base
 
 #Frame Turtle
 turtleCanvas = Canvas(fenetre)
+turtleScreen = TurtleScreen(turtleCanvas)
 turtleCanvas.grid(row=0,column=1,sticky="NSWE")
-t = RawTurtle(turtleCanvas)
+t = RawTurtle(turtleScreen)
 
 
 
+turtleCanvas.bind("<Button>",getSourisPos)
 
-
-
-
-
+test.test()
 
 
 t.speed('fastest')
