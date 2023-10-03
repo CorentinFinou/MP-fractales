@@ -3,9 +3,12 @@ from turtle import *
 from tkinter import colorchooser
 
 def init():
-    global t,fenetre,framePresets,fractaleIntermediateFctn,curseurOrdre,curseurRotation,curseurTaille,turtleColor
+    global t,fenetre,framePresets,fractaleIntermediateFctn,curseurOrdre,curseurRotation,curseurTaille,turtleColor,couleurButton
     def reset():
         global isClear
+        curseurTaille.set(200)
+        curseurOrdre.set(4)
+        curseurRotation.set(0)
         t.clear()
         t.penup()
         t.goto(0,0)
@@ -96,7 +99,8 @@ def init():
     #button3 = Button(framePresets,text="preset 3",activebackground="#7ea0b7",background="#a9cef4",font="20").grid(row=3,sticky="NSWE")
     #button4 = Button(framePresets,text="preset 4",activebackground="#7ea0b7",background="#a9cef4",font="20").grid(row=4,sticky="NSWE")
     #button5 = Button(framePresets,text="preset 5",activebackground="#7ea0b7",background="#a9cef4",font="20").grid(row=5,sticky="NSWE")
-    #resetButton = Button(framePresets,text="Reset",activebackground="#7ea0b7",background="#a9cef4",font="20",command=reset).grid(row=6,sticky="NSWE")
+    resetButton = Button(framePresets,text="Reset",activebackground="#7ea0b7",background="#a9cef4",font="Arial 17",command=reset).grid(row=100,sticky="NSWE") #100 histoire d'être sûr que le bouton reset sera toujours en bas
+    framePresets.grid_rowconfigure(100,weight=1)
     #for i in range (len(framePresets.winfo_children())-1):
         #framePresets.grid_rowconfigure(i+1,weight=1)
     #print(len(framePresets.winfo_children()))
@@ -107,7 +111,7 @@ def init():
     frameBarres = Frame(frameConfig,highlightbackground="black", highlightthickness=1)
     frameBarres.grid(row=0,column=1,sticky="NSWE")
     frameBarres.grid_columnconfigure(0,weight=1)
-    labelParamètres = Label(frameBarres, text="Paramètres :",font="Arial 30 bold",background="#a9cef4",foreground="#597081").grid(row=0,sticky="NSWE")
+    labelParamètres = Label(frameBarres, text="Paramètres :",font="Arial 40 bold",background="#a9cef4",foreground="#597081").grid(row=0,sticky="NSWE")
 
 
 
@@ -154,8 +158,8 @@ def init():
 
 
 def add(fctn,name):
-    Button(framePresets,text=name,activebackground="#7ea0b7",background="#a9cef4",font="20",command= lambda: fractaleIntermediateFctn(fctn,curseurOrdre.get(),curseurTaille.get(),curseurRotation.get(),turtleColor)).grid(row=len(framePresets.winfo_children()),sticky="NSWE")
-    #Button(framePresets,text="preset 3",activebackground="#7ea0b7",background="#a9cef4",font="20").grid(row=3,sticky="NSWE")
+    Button(framePresets,text=name,activebackground="#7ea0b7",background="#a9cef4",font="Arial 17",command= lambda: fractaleIntermediateFctn(fctn,curseurOrdre.get(),curseurTaille.get(),curseurRotation.get(),turtleColor)).grid(row=len(framePresets.winfo_children())-1,sticky="NSWE")
+    framePresets.grid_rowconfigure(len(framePresets.winfo_children())-1,weight=1)
 
 def start():
     fenetre.mainloop()
