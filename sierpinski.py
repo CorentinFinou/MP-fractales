@@ -1,4 +1,3 @@
-import turtle
 def sierpinski(t,n, l):
         if n == 0: 
             for _ in range(3):

@@ -154,7 +154,6 @@ def init():
 
 
 def add(fctn,name):
-    print(len(framePresets.winfo_children()))
     Button(framePresets,text=name,activebackground="#7ea0b7",background="#a9cef4",font="20",command= lambda: fractaleIntermediateFctn(fctn,curseurOrdre.get(),curseurTaille.get(),curseurRotation.get(),turtleColor)).grid(row=len(framePresets.winfo_children()),sticky="NSWE")
     #Button(framePresets,text="preset 3",activebackground="#7ea0b7",background="#a9cef4",font="20").grid(row=3,sticky="NSWE")
 
