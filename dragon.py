@@ -1,4 +1,6 @@
 def dragoncurve(t,n,l):
+    n=n*2
+    l = l/10
     def x(n):
         if n==0:
             return

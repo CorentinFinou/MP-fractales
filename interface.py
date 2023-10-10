@@ -15,25 +15,31 @@ def init():
         t.penup()
         t.goto(0,0)
         t.goto(turtleCanvas.winfo_screenmmwidth()/2,-turtleCanvas.winfo_screenmmwidth()/2)
-        #print(turtleCanvas.winfo_screenmmwidth()/2,-turtleCanvas.winfo_screenmmwidth()/2)
         t.pendown()
         isClear = True
-    #
 
     def getSourisPos(eventSpec):
         t.penup()
-        t.goto(eventSpec.x-191,-eventSpec.y+134)#pas toucher, a tester sur plus grand écran
+        t.goto(eventSpec.x-191,-eventSpec.y+134)
         t.pendown()
+
     
     def fractaleIntermediateFctn(nomFractale,n,l,r,c,L):
         global isClear
         if checkBoxClearBoolean.get() == True:
             if isClear == True:
-                t.color(c)
-                t.setheading(r)
-                t.pensize(L)
-                nomFractale(t,n,l)
-                isClear = False
+                try:
+                    t.color(c)
+                    t.setheading(r)
+                    t.pensize(L)
+                    nomFractale(t,n,l)
+                    isClear = False
+                except TypeError: #pour, si besoin, affichage de formes simples (sans variable ordre)
+                    nomFractale(t,l)
+                except : # c n'est parfois pas au bon format (rare) pour des raisons inconnues --> turtle.TurtleGraphicsError: bad color string:,           exception inconnue : pas de spécifaction a l'except, recommence tant que c est au bon format
+                    print("Couleur au mauvais format, nouvelle tentative.")
+                    c = "#"+hex(randint(0,2**24))[2:]
+                    fractaleIntermediateFctn(nomFractale,n,l,r,c,L)
             else :
                 t.clear()
                 isClear = True
@@ -43,7 +49,6 @@ def init():
             t.setheading(r)
             t.pensize(L)
             nomFractale(t,n,l)
-            
 
     def choose_color():
         global turtleColor,couleurButton
@@ -52,16 +57,16 @@ def init():
         couleurButton.config(foreground=turtleColor)
 
     def random():
+        global turtleColor
         curseurTaille.set(randint(10,300))
         curseurOrdre.set(randint(1,10))
         curseurRotation.set(randint(0,360))
         curseurWidth.set(randint(1,10))
+        turtleColor = "#"+hex(randint(0,2**24))[2:]
 
     fenetre = Tk()
     fenetre.title("Fractales")
     fenetre.attributes("-fullscreen",True)
-    isClear = True
-
 
     ###Frame 1###
     #Contient les labels et les commandes
@@ -81,8 +86,6 @@ def init():
     frameLabel = Frame(frame,background="#7ea0b7",highlightbackground="black", highlightthickness=1)
     frameLabel.grid(row=0,sticky="NSWE")
     labelTitre = Label(frameLabel, text="Fractales",font="Arial 30",background="#7ea0b7").grid(row=0,sticky="SWE")
-    frctlActuelle = "Aucune fractale choisie"
-    labelFrctlActuelle = Label(frameLabel, text=frctlActuelle, font="Arial 20", background="#7ea0b7").grid(row=1,sticky="NWE")
     frameLabel.grid_columnconfigure(0,weight=1)
     frameLabel.grid_rowconfigure(0,weight=1)
     frameLabel.grid_rowconfigure(1,weight=1)
@@ -103,20 +106,8 @@ def init():
     framePresets.grid(row=0,column=0,sticky="NSWE")
     framePresets.grid_columnconfigure(0, weight=1)
     labelPresets = Label(framePresets, text="Presets :",font="Arial 30 bold",background="#a9cef4",foreground="#597081").grid(row=0,sticky="NSWE")
-
-
-
-    #Boutons de presets (master = framePresets):
-    #sierpinskiButton = Button(framePresets,text="Sierpinski",font="20",activebackground="#7ea0b7",background="#a9cef4",command= lambda: fractaleIntermediateFctn(sierpinski,curseurOrdre.get(),curseurTaille.get(),curseurRotation.get(),turtleColor)).grid(row=1,sticky="NSWE")
-    #vonKoch1Button = Button(framePresets,text="VonKoch 1",font="20",activebackground="#7ea0b7",background="#a9cef4",command= lambda: fractaleIntermediateFctn(vonKoch1,curseurOrdre.get(),curseurTaille.get(),curseurRotation.get(),turtleColor)).grid(row=2,sticky="NSWE")
-    #button3 = Button(framePresets,text="preset 3",activebackground="#7ea0b7",background="#a9cef4",font="20").grid(row=3,sticky="NSWE")
-    #button4 = Button(framePresets,text="preset 4",activebackground="#7ea0b7",background="#a9cef4",font="20").grid(row=4,sticky="NSWE")
-    #button5 = Button(framePresets,text="preset 5",activebackground="#7ea0b7",background="#a9cef4",font="20").grid(row=5,sticky="NSWE")
     resetButton = Button(framePresets,text="Reset",activebackground="#7ea0b7",background="#a9cef4",font="Arial 17",command=reset).grid(row=100,sticky="NSWE") #100 histoire d'être sûr que le bouton reset sera toujours en bas
     framePresets.grid_rowconfigure(100,weight=1)
-    #for i in range (len(framePresets.winfo_children())-1):
-        #framePresets.grid_rowconfigure(i+1,weight=1)
-    #print(len(framePresets.winfo_children()))
 
 
 
@@ -159,6 +150,7 @@ def init():
     checkBoxClear.select()#set la checkBox sur cochée de base
 
 
+
     #Frame Turtle
     turtleCanvas = Canvas(fenetre)
     turtleScreen = TurtleScreen(turtleCanvas)
@@ -171,7 +163,6 @@ def init():
 
     t.speed('fastest')
     reset()
-
 
 
 def add(fctn,name):
